@@ -51,6 +51,7 @@ let framesMoveUp
 let water
 let needle
 let counter
+let wasTouched
 
 function preload()  {
     this.load.image(assets.background, 'assets/background.png')
@@ -128,6 +129,10 @@ function create()  {
         repeat: 0
     })
 
+    this.input.on('pointerdown', () => {
+        wasTouched = true
+    })
+
     gameOverBanner = this.add.image(configurations.width / 2, 106, assets.gameOver)
     gameOverBanner.setDepth(20)
     gameOverBanner.visible = false
@@ -182,8 +187,9 @@ function update()  {
         framesMoveUp--
         return
     }
-    if (Phaser.Input.Keyboard.JustDown(upButton) && counter > 0)
+    if ((Phaser.Input.Keyboard.JustDown(upButton) || wasTouched) && counter > 0)
     {
+        wasTouched = false
         counter--
         player.setVelocityY(-400)
         player.angle = -15
